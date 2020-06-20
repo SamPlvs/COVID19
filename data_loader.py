@@ -9,24 +9,33 @@ class CovidLoader(torch.utils.data.Dataset):
         self.args= args
 
         if split=='train':
-            self.img_paths= np.load(self.args.train_npy)
+            self.img_paths= np.load(self.args.train_npy, allow_pickle=True)
+        
         elif split=='val':
-            self.img_paths= np.load(self.args.val_npy)
+            self.img_paths= np.load(self.args.val_npy, allow_pickle=True)
+        
         else:
-            self.img_paths = np.load(self.args.test_npy)
+            self.img_paths = np.load(self.args.test_npy, allow_pickle=True)
          
         self.transforms= transforms
 
     def __getitem__(self, idx):
-        img= Image.open('{}/{}'.format(self.args.root_dir, self.img_paths[idx][0]))
+        if self.img_paths[idx][1] == 0:
+            root_dir= '{}/CT_NonCOVID'.format(self.args.root_dir)
+        elif self.img_paths[idx][1] == 1:
+            root_dir= '{}/CT_COVID'.format(self.args.root_dir)
+        else:
+            raise exception('label not implemented! {}'.format(self.img_paths[idx][1]))
+
+        img= Image.open('{}/{}'.format(root_dir, self.img_paths[idx][0]))
         label= self.img_paths[idx][1]
-        label= torch.from_numpy(label, dtype=torch.float32)
+        label= torch.tensor(label, dtype=torch.float32)
 
         if self.transforms:
-            img= self.transforms(covid_img.convert('RGB'))
+            img= self.transforms(img.convert('RGB'))
 
         return img, label
 
 
     def __len__(self):
-        return len(img_paths)
+        return len(self.img_paths)
