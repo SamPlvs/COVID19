@@ -10,3 +10,10 @@
 7. https://www.kaggle.com/khoongweihao/covid19-xray-dataset-train-test-sets
 8. https://www.kaggle.com/xuehaihe/covidct
 9. https://www.kaggle.com/andrewmvd/convid19-x-rays
+
+## To Train:
+on CPU:
+python main.py --train
+
+on GPU:
+python main.py --train --cuda
