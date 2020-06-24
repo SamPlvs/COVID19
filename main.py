@@ -83,7 +83,8 @@ def main():
 
     # load the data
     _transforms= transforms.Compose([transforms.Resize((256,256)),
-                                    transforms.ToTensor()])
+                                     transforms.RandomHorizontalFlip(p=0.5),
+                                     transforms.ToTensor()])
     if args.train:
         covid_train_data= CovidLoader(args, split='train', transforms= _transforms)
         covid_val_data= CovidLoader(args, split='val', transforms=_transforms)
