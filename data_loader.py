@@ -39,3 +39,14 @@ class CovidLoader(torch.utils.data.Dataset):
 
     def __len__(self):
         return len(self.img_paths)
+    
+    
+    
+class MyTransforms():
+    def __init__(self, *args):
+        # this is where you initialise certain parameters / other functions you want to call.
+        pass
+    
+    def __call__(self, input):
+        # this is where you define what transformation will happen
+        pass
